@@ -14,7 +14,7 @@ public class EmployeeUtil<T extends Employee>{
        return employee.getSalary();
    }
     
-   public boolean isSalaryEqual(EmployeeUtil<?> secondEmp){
+   public boolean isSalaryEqual(EmployeeUtil secondEmp){
         
        if(employee.getSalary() == secondEmp.getSalary()){
            return true;

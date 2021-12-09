@@ -2,7 +2,7 @@ package com.solvd.bookingsystem.bean.profiles;
 
 import java.util.List;
 
-public class Employee<T extends List> {
+public class Employee<T> {
 
 	private int jobId;
 	private String name;
@@ -15,9 +15,9 @@ public class Employee<T extends List> {
 	}
 
 	public Employee(String name) {
-		
+
 		this.name = name;
-		
+
 	}
 
 	public int getJobId() {
