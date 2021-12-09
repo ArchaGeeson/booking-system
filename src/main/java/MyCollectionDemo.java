@@ -1,6 +1,5 @@
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,10 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.solvd.bookingsystem.bean.Booking;
 import com.solvd.bookingsystem.bean.profiles.Member;
 import com.solvd.bookingsystem.bean.profiles.User;
@@ -20,7 +17,7 @@ import com.solvd.bookingsystem.bean.theatre.Screen;
 import com.solvd.bookingsystem.bean.theatre.Seat;
 import com.solvd.bookingsystem.bean.theatre.Show;
 import com.solvd.bookingsystem.bean.theatre.Theatre;
-import com.solvd.bookingsystem.services.TheaterService;
+
 
 public class MyCollectionDemo {
 

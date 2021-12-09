@@ -1,7 +1,6 @@
 package com.solvd.bookingsystem.functionalInterfaces;
 
 import com.solvd.bookingsystem.bean.profiles.User;
-import com.solvd.bookingsystem.bean.theatre.Movie;
 import com.solvd.bookingsystem.bean.theatre.Show;
 
 @FunctionalInterface
