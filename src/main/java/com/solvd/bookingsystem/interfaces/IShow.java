@@ -9,8 +9,8 @@ import com.solvd.bookingsystem.bean.theatre.Show;
 import com.solvd.bookingsystem.exceptions.ScreenAlreadyOccupiedException;
 
 public interface IShow<T> {
-	T createShow(Entertainment entertainment,Screen screen,Date showStartTime) throws ScreenAlreadyOccupiedException;
 	
+	void playShow(T show);
 	void updateShowInfo();
 	void deleteShow();
 	

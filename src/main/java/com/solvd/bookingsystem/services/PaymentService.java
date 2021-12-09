@@ -1,5 +1,7 @@
 package com.solvd.bookingsystem.services;
 
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,6 +14,8 @@ public class PaymentService {
 	public String makePayment(Payment payment) throws PaymentFailedException {
 		Payment pay = new Payment();
 		log.info("Select a payment type...");
+		
+		
 
 		if ("Paypal".equalsIgnoreCase(payment.getPaymentMethod())) {
 			

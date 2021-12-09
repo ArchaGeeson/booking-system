@@ -1,23 +1,23 @@
 package com.solvd.bookingsystem.linkedlist;
 
-public class NodeClass<E> {
+public class NodeClass<T> {
 
-	private E data;
-	private NodeClass<E> next;
+	private T data;
+	private NodeClass<T> next;
 
-	public E getData() {
+	public T getData() {
 		return data;
 	}
 
-	public void setData(E data) {
+	public void setData(T data) {
 		this.data = data;
 	}
 
-	public NodeClass<E> getNext() {
+	public NodeClass<T> getNext() {
 		return next;
 	}
 
-	public void setNext(NodeClass<E> next) {
+	public void setNext(NodeClass<T> next) {
 		this.next = next;
 	}
 

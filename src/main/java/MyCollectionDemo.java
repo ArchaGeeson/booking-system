@@ -81,10 +81,10 @@ public class MyCollectionDemo {
 		Screen screen1 = new Screen("Screen 1 ", 1, showList);
 		Screen screen2 = new Screen("Screen 2 ", 2, showList);
 
-		Show movie1show = new Show(movie1, new Date());
-		Show movie2show = new Show(movie2, new Date());
-		Show movie3show = new Show(movie3, new Date());
-		Show movie4show = new Show(movie4, new Date());
+		Show movie1show = new Show();
+		Show movie2show = new Show();
+		Show movie3show = new Show();
+		Show movie4show = new Show();
 
 		showList.add(movie1show);
 		showList.add(movie2show);

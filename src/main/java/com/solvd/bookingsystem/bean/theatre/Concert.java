@@ -8,6 +8,12 @@ public class Concert {
 	private String duration;
 	private Date showDate;
 	
+	@Override
+	public String toString() {
+		return "Concert [artist=" + artist + ", title=" + title + ", duration=" + duration + ", showDate=" + showDate
+				+ "]";
+	}
+
 	public Concert() {
 		
 	}

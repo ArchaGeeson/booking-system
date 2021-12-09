@@ -1,24 +1,23 @@
 package com.solvd.bookingsystem.lambdas;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.solvd.bookingsystem.bean.Booking;
+import com.solvd.bookingsystem.bean.Address;
 import com.solvd.bookingsystem.bean.profiles.Admin;
 import com.solvd.bookingsystem.bean.profiles.Member;
 import com.solvd.bookingsystem.bean.profiles.User;
+import com.solvd.bookingsystem.bean.theatre.Concert;
 import com.solvd.bookingsystem.bean.theatre.Movie;
-
+import com.solvd.bookingsystem.exceptions.AddressNotFoundException;
+import com.solvd.bookingsystem.util.DataCollection;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 public class Lambdas {
@@ -33,13 +32,20 @@ public class Lambdas {
 		return memberList.stream().filter(predicate).collect(Collectors.toList());
 	}
 
-	public static void printList(List<User> listOfAdmins, Consumer<User> consumer) {
-		for (User admin : listOfAdmins) {
-			consumer.accept(admin);
+	public static void printList(List<Admin> adminList, Consumer<Admin> consumer) {
+		adminList.stream().forEach((admin) -> consumer.accept(admin));
+	}
+
+	private static void findMovie(List<Movie> movies) {
+		Optional<Movie> result = movies.stream().filter(movie -> movie.getRatings() >= 7.0).findFirst();
+		log.info(result);
+
+		if (result.isPresent()) {
+			log.info("result: " + result.get());
+		} else {
+			log.info("Not found!");
 		}
 	}
-	
-	
 
 	public static void main(String[] args) {
 
@@ -89,8 +95,8 @@ public class Lambdas {
 			}
 		}
 
-		List<User> result = Lambdas.filterMembers(memberList, (name) -> name.getFirstName().startsWith("C"));
-		log.info("result : " + result);
+		List<User> resultFirstNameC = Lambdas.filterMembers(memberList, (name) -> name.getFirstName().startsWith("C"));
+		log.info("resultFirstNameC : " + resultFirstNameC);
 
 		List<User> nameStartsWithC = memberList.stream().filter((name) -> name.getFirstName().startsWith("C"))
 				.collect(Collectors.toList());
@@ -98,38 +104,53 @@ public class Lambdas {
 
 		/*------------------------------------------------------------------------------------------------------------*/
 
-		//Function interface
-		
+		// Function interface
+
 		Function<User, String> nameUppercase = (name) -> name.getFirstName().toUpperCase();
 		log.info("Name in upper case: " + nameUppercase.apply(member5));
 
 		/*-----------------------------------------------------------------------------------------------------------*/
 
-		Admin admin1 = new Admin("Rose", 20001);
-		Admin admin2 = new Admin("Jude", 20002);
-		Admin admin3 = new Admin("Ryan", 20003);
-		Admin admin4 = new Admin("Tucker", 20004);
-		Admin admin5 = new Admin("Sonia", 20005);
-		Admin admin6 = new Admin("Ruth", 20006);
+		Admin admin1 = new Admin();
+		admin1.setName("Rose");
+		// admin1.setDesignation("Admin");
+		Admin admin2 = new Admin();
+		admin2.setName("Jude");
+		admin2.setDesignation("Admin");
 
 		// Consumer interface
-		Consumer<User> consumer = admin -> log.info(" " + admin);
-		List<User> adminList = Arrays.asList(new Admin[] { admin1, admin2, admin3, admin4, admin5 });
-		printList(adminList, consumer);
-		
-		/*
-		 * List<User> adminListSorted =
-		 * adminList.stream().sorted().collect(Collectors.toList());
-		 * log.info("adminListSorted "+ adminListSorted );
-		 */
+		List<Admin> adminList = Arrays.asList(new Admin[] { admin1, admin2 });
+		printList(adminList, admin -> log.info(" " + admin.getName()));
 
-		List<String> countryList = Arrays.asList("USA", "Argentina", "Canada", "Spain", "Russia","Japan");
+		/*-----------------------------------------------------------------------------------------------------*/
+		List<String> countryList = Arrays.asList("USA", "Argentina", "Canada", "Spain", "Russia", "Japan");
 		List<String> countrySorted = countryList.stream().sorted().collect(Collectors.toList());
 		log.info("countrySorted" + countrySorted);
 		/*-----------------------------------------------------------------------------------------------------*/
-		
-		
-		
+
+		List<Movie> movieList = new ArrayList<>();
+		movieList.addAll(DataCollection.getMovies("Action"));
+		// log.info(movieList);
+		findMovie(movieList);
+
+		List<Concert> taylorSwift = new ArrayList<>();
+		taylorSwift.addAll(DataCollection.getConcerts("Taylor Swift"));
+
+		Optional<List<Concert>> concertExists = Optional.of(taylorSwift);
+		if (concertExists.isPresent()) {
+			log.info(concertExists.get());
+		}
+
+		Optional<String> designationOptional = Optional.ofNullable(admin1.getDesignation());
+		log.info(designationOptional.orElse("Default: Admin"));
+
+		Optional<Address> memberAdd = Optional.ofNullable(member1.getAddress());
+		try {
+			log.info(memberAdd.orElseThrow(() -> new AddressNotFoundException("Address not available")));
+		} catch (AddressNotFoundException e) {
+			log.error(e.getMessage());
+		}
+
 	}
 
 }

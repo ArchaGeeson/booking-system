@@ -5,29 +5,20 @@ import java.util.List;
 
 import com.solvd.bookingsystem.bean.Ticket;
 
-public class Show<T>{
+public class Show<T extends Entertainment> {
 	private Date showStartTime;
 	private Date showEndTime;
-	private String showId;
+	private int showId;
 	private Ticket ticketNumber;
 	private Screen showPlayedAt;
 	private T entertainment;
 	private List<T> entertainments;
-	
-	
 
 	public Show() {
 
 	}
 
-	public Show(T entertainment, Date showStartTime) {
-		this.entertainment = entertainment;
-		this.showStartTime = showStartTime;
-		
-	}
-
-	
-	public Show(String showId, T entertainment, Screen screen, Date showStartTime2) {
+	public Show(int showId, T entertainment, Screen screen, Date showStartTime) {
 		this.showId = showId;
 		this.entertainment = entertainment;
 		this.showPlayedAt = screen;
@@ -50,11 +41,11 @@ public class Show<T>{
 		this.showEndTime = showEndTime;
 	}
 
-	public String getShowId() {
+	public int getShowId() {
 		return showId;
 	}
 
-	public void setShowId(String showId) {
+	public void setShowId(int showId) {
 		this.showId = showId;
 	}
 
@@ -89,8 +80,5 @@ public class Show<T>{
 	public void setEntertainments(List<T> entertainments) {
 		this.entertainments = entertainments;
 	}
-
-	
-	
 
 }

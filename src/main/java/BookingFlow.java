@@ -19,9 +19,9 @@ import com.solvd.bookingsystem.exceptions.PaymentFailedException;
 import com.solvd.bookingsystem.exceptions.SeatsAlreadyOccupiedException;
 import com.solvd.bookingsystem.exceptions.ShowNotFoundException;
 import com.solvd.bookingsystem.exceptions.ValidationException;
-import com.solvd.bookingsystem.interfaces.IBooking;
-import com.solvd.bookingsystem.interfaces.IPayment;
-import com.solvd.bookingsystem.interfaces.ISignup;
+import com.solvd.bookingsystem.functionalInterfaces.IBooking;
+import com.solvd.bookingsystem.functionalInterfaces.IPayment;
+import com.solvd.bookingsystem.functionalInterfaces.ISignup;
 import com.solvd.bookingsystem.services.BookingService;
 import com.solvd.bookingsystem.services.LoginService;
 import com.solvd.bookingsystem.services.MovieService;
@@ -99,7 +99,7 @@ public class BookingFlow {
 		showMovie1.setShowPlayedAt(screen);// get screen info
 		showMovie1.setShowStartTime(new Date());
 		showMovie1.setTicketNumber(new Ticket());
-		showMovie1.setShowId("Show10001");
+		showMovie1.setShowId(10001);
 
 		shows.add(showMovie1);
 
@@ -119,24 +119,22 @@ public class BookingFlow {
 		searchService.search(search);
 
 		ShowService showService = new ShowService();
-
+		showService.getShow(showMovie1);
+		
 		BookingService bookingService = new BookingService();
 
 		Payment payment = new Payment();
 		payment.setPaymentMethod("cash");
 		PaymentService paymentService = new PaymentService();
+		
 
 		try {
 			loginService.login(login);
-			showService.getShow(showMovie1.getShowId(),movie1);
 			bookingService.bookingShow(showMovie1);
 			paymentService.makePayment(payment);
 		} catch (ValidationException e) {
 
 			log.error("Invalid login details..");
-		} catch (ShowNotFoundException e) {
-			// e.printStackTrace();
-			log.error(e.getMessage());
 		} catch (SeatsAlreadyOccupiedException e) {
 			// e.printStackTrace();
 			log.error("Seats are already occupied...");

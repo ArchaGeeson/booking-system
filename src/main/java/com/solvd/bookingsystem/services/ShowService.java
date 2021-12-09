@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +20,7 @@ import com.solvd.bookingsystem.exceptions.ScreenAlreadyOccupiedException;
 import com.solvd.bookingsystem.exceptions.ShowNotFoundException;
 import com.solvd.bookingsystem.interfaces.IShow;
 
-public class ShowService implements IShow {
+public class ShowService<T> implements IShow<T> {
 
 	private static Logger log = LogManager.getLogger(ShowService.class.getName());
 
@@ -28,23 +30,27 @@ public class ShowService implements IShow {
 		this.shows = new HashMap<>();
 	}
 
-	public Show getShow(String showId, Movie movie) throws ShowNotFoundException {
-		log.info("Getting show for the movie: " + movie.getTitle());
-		if (!shows.containsKey(showId)) {
+	// Optional
+	public Show getShow(Show show) {
+		Optional<Integer> isShowAvailable = Optional.ofNullable(show.getShowId());
 
-			throw new ShowNotFoundException();
+		try {
+			log.info(isShowAvailable.orElseThrow(() -> new ShowNotFoundException()));
+		} catch (ShowNotFoundException e) {
+			log.error(e.getMessage());
 		}
-		return shows.get(showId);
+		return show;
+
 	}
 
-	private List<Show> getShowsForScreen(final Screen screen) {
-		final List<Show> response = new ArrayList<>();
-		for (Show show : shows.values()) {
+	public List<Show> getShowsForScreen(List<Show> showsForScreen, Consumer<Screen> screen) {
+
+		showsForScreen.stream().forEach(show -> {
 			if (show.getShowPlayedAt().equals(screen)) {
-				response.add(show);
+				showsForScreen.add(show);
 			}
-		}
-		return response;
+		});
+		return showsForScreen;
 	}
 
 	public Show createShow(Entertainment entertainment, Screen screen, Date showStartTime)
@@ -59,7 +65,7 @@ public class ShowService implements IShow {
 			log.error(e.getMessage());
 		}
 		String showId = "show10001";
-		Show show = new Show(showId, entertainment, screen, showStartTime);
+		Show show = new Show();
 		this.shows.put(showId, show);
 		return show;
 	}
@@ -79,16 +85,10 @@ public class ShowService implements IShow {
 
 	}
 
-	/*
-	 * private boolean isShowAvailable; public void getShowInfo(Show show, Movie
-	 * movie) throws ShowNotFoundException {
-	 * 
-	 * // MovieService m = new MovieService(); log.info("Movie Details: " + movie);
-	 * log.info("Getting show for the movie: " + movie.getTitle()); if
-	 * (!isShowAvailable) { log.info("Please book a seat now for the show"); } else
-	 * { throw new ShowNotFoundException();
-	 * 
-	 * } }
-	 */
+	@Override
+	public void playShow(T show) {
+		// TODO Auto-generated method stub
+
+	}
 
 }
