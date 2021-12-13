@@ -25,12 +25,6 @@ public class BookingService {
 
 	private boolean isSeatAvailbale;
 	
-	/*
-	 * public static ArrayList<Show> searchShows(String name){ if
-	 * (movieMap.containsKey(name)){ return movieMap.get(name); } else return null;
-	 * }
-	 */
-	
 	public void displayAvailableSeats() {
 		
 	}
