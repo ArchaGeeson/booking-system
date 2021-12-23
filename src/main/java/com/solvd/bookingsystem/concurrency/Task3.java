@@ -1,12 +1,17 @@
 package com.solvd.bookingsystem.concurrency;
 
+import java.sql.Connection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Task3 {
 
+	private static Logger log = LogManager.getLogger(Task3.class.getName());
 	public static void main(String[] args) {
 		Task3 task1=new Task3();
 		Task3 task2=new Task3();
@@ -29,10 +34,10 @@ public class Task3 {
 			f4.get();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 		
 		

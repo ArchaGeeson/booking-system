@@ -1,15 +1,31 @@
 package com.solvd.bookingsystem.concurrency;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.*;
 import java.util.concurrent.*;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ConnectionPool {
 	private static ConnectionPool pooliInstance;
 	private List<Connection> connections = new CopyOnWriteArrayList<>();
+	private static Logger log = LogManager.getLogger(ConnectionPool.class.getName());
+	private static String url = "52.59.193.212:3306";
+	private static String userName = "root";
+	private static String password = "devintern";
 
 	private ConnectionPool() {
 		for (int i = 0; i < 3; i++) {
-			connections.add(new Connection());
+			Connection connection = null;
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				connection = DriverManager.getConnection(url, userName, password);
+				connections.add(connection);
+			} catch (Exception e) {
+				log.error(e);
+			}
 		}
 	}
 
@@ -27,11 +43,12 @@ public class ConnectionPool {
 
 	public synchronized Connection getConnection() {
 		Connection connection = null;
+
 		if (isConnectionAailable()) {
-			System.out.println("pool size= "+connections.size());
+			log.info("pool size= " + connections.size());
 			connection = connections.get(0);
-			connections.remove(0);	
-			System.out.println("pool size after = "+connections.size());
+			connections.remove(0);
+			log.info("pool size after = " + connections.size());
 		}
 
 		return connection;
@@ -40,14 +57,15 @@ public class ConnectionPool {
 	public synchronized void releaseConnection(Connection connection) {
 		connections.add(connection);
 	}
+
 	private boolean isConnectionAailable() {
-		if(connections.isEmpty()) {
+		if (connections.isEmpty()) {
 			try {
-				System.out.println("connection is empty");
+				log.info("connection is empty");
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e);
 			}
 			isConnectionAailable();
 		}

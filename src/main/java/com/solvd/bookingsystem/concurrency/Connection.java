@@ -1,5 +1,7 @@
-package com.solvd.bookingsystem.concurrency;
-
-public class Connection {
-
-}
+/*
+ * package com.solvd.bookingsystem.concurrency;
+ * 
+ * public class Connection {
+ * 
+ * }
+ */
